@@ -1,20 +1,21 @@
 package cfg
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
-	"github.com/BurntSushi/toml"
-	"github.com/mitchellh/mapstructure"
+	"github.com/spf13/viper"
 )
 
 const (
 	Dev  = "dev"
+	Qa   = "qa"
 	Prod = "prod"
-	Test = "test"
 )
 
 var AppConf *AppConfig
+var gloablViper *viper.Viper
 
 type AppConfig struct {
 	File string
@@ -112,11 +113,17 @@ func (cfg *AppConfig) load() error {
 		return fmt.Errorf("config file %s not existed", cfg.File)
 	}
 
-	_, err := toml.DecodeFile(cfg.File, cfg)
-	if err != nil {
+	// 全局唯一的viper
+	gloablViper = viper.New()
+	gloablViper.SetConfigFile(cfg.File)
+	gloablViper.SetConfigType("toml")
+
+	if err := gloablViper.ReadInConfig(); err != nil {
 		return fmt.Errorf("load config file %s failed, error: %v", cfg.File, err)
 	}
-
+	if err := gloablViper.Unmarshal(&cfg); err != nil {
+		return fmt.Errorf("unmarshal %s to config object failed, error: %v", cfg.File, err)
+	}
 	return nil
 }
 
@@ -125,7 +132,14 @@ func (cfg *AppConfig) IsDevEnv() bool {
 }
 
 func (cfg *AppConfig) LoadExtConfig(v interface{}) error {
-	return mapstructure.Decode(cfg.Ext, v)
+	if gloablViper == nil {
+		return errors.New("global viper is not initialize")
+	}
+	extV := gloablViper.Sub("ext")
+	if extV == nil {
+		return nil
+	}
+	return extV.Unmarshal(&v)
 }
 
 func init() {
