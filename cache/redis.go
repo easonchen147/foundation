@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/easonchen147/foundation/cfg"
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
 )
 
 var (

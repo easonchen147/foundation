@@ -5,12 +5,12 @@ go 1.18
 require (
 	github.com/gin-contrib/pprof v1.4.0
 	github.com/gin-gonic/gin v1.9.0
-	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/matoous/go-nanoid/v2 v2.0.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/panjf2000/ants/v2 v2.7.0
+	github.com/redis/go-redis/v9 v9.0.3
 	github.com/segmentio/kafka-go v0.4.39
 	github.com/spf13/viper v1.15.0
 	go.mongodb.org/mongo-driver v1.11.4
