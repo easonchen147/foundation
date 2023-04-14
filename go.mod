@@ -1,6 +1,6 @@
 module github.com/easonchen147/foundation
 
-go 1.18
+go 1.20
 
 require (
 	github.com/gin-contrib/pprof v1.4.0
