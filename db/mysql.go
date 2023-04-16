@@ -1,4 +1,4 @@
-package database
+package db
 
 import (
 	"errors"
@@ -31,8 +31,8 @@ func DB(dbName ...string) *gorm.DB {
 	return db
 }
 
-// InitDB 初始化数据库
-func InitDB(cfg *cfg.AppConfig) error {
+// InitMysql 初始化数据库
+func InitMysql(cfg *cfg.AppConfig) error {
 	conns = make(map[string]*gorm.DB)
 	for dbKey, dbConfig := range cfg.DbsConfig {
 		conn, err := openConn(dbConfig.Uri, dbConfig.MaxIdleConn, dbConfig.MaxOpenConn, dbConfig.ConnectLifeTime, dbConfig.ConnectIdleTime)

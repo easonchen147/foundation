@@ -34,6 +34,8 @@ type AppConfig struct {
 	RedisConfig        *redisConfig         `toml:"redis"`
 	RedisClusterConfig *redisClusterConfig  `toml:"redis_cluster"`
 	KafkaConfig        *kafkaConfig         `toml:"kafka"`
+	SignConfig         *signConfig          `toml:"sign"`
+	TsConfig           *tsConfig            `toml:"ts"`
 
 	Ext map[string]interface{} `toml:"ext"`
 }
@@ -91,6 +93,15 @@ type mongoConfig struct {
 	MaxOpenConn    uint64 `toml:"max_open_conn"`
 	MaxPoolSize    uint64 `toml:"max_pool_size"`
 	MinPoolSize    uint64 `toml:"min_pool_size"`
+}
+
+type signConfig struct {
+	Secret string `toml:"secret"`
+	Salt   string `toml:"salt"`
+}
+
+type tsConfig struct {
+	Expire string `toml:"expire"`
 }
 
 func InitConfig(file string) *AppConfig {

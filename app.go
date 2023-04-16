@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/easonchen147/foundation/cache"
 	"github.com/easonchen147/foundation/cfg"
-	"github.com/easonchen147/foundation/database"
+	"github.com/easonchen147/foundation/db"
 	"github.com/easonchen147/foundation/kafka"
 	"github.com/easonchen147/foundation/log"
 	middleware2 "github.com/easonchen147/foundation/middleware"
@@ -42,8 +42,8 @@ func initialize(cfg *cfg.AppConfig) error {
 	// 初始化日志
 	log.Init(cfg)
 
-	// 初始化数据库
-	err := database.InitDB(cfg)
+	// 初始化Mysql数据库
+	err := db.InitMysql(cfg)
 	if err != nil {
 		return fmt.Errorf("init db failed, error: %s", err)
 	}
