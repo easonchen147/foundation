@@ -20,88 +20,88 @@ var gloablViper *viper.Viper
 type AppConfig struct {
 	File string
 
-	Env           string `toml:"env"`
-	HttpAddr      string `toml:"http_addr"`
-	HttpPort      int    `toml:"http_port"`
-	LogMode       string `toml:"log_mode"`
-	LogFile       string `toml:"log_file"`
-	LogLevel      string `toml:"log_level"`
-	AccessLogFile string `toml:"access_log_file"`
-	SqlLogFile    string `toml:"sql_log_file"`
+	Env           string `mapstructure:"env"`
+	HttpAddr      string `mapstructure:"http_addr"`
+	HttpPort      int    `mapstructure:"http_port"`
+	LogMode       string `mapstructure:"log_mode"`
+	LogFile       string `mapstructure:"log_file"`
+	LogLevel      string `mapstructure:"log_level"`
+	AccessLogFile string `mapstructure:"access_log_file"`
+	SqlLogFile    string `mapstructure:"sql_log_file"`
 
-	DbsConfig          map[string]*dbConfig `toml:"dbs"`
-	MongoConfig        *mongoConfig         `toml:"mongo"`
-	RedisConfig        *redisConfig         `toml:"redis"`
-	RedisClusterConfig *redisClusterConfig  `toml:"redis_cluster"`
-	KafkaConfig        *kafkaConfig         `toml:"kafka"`
-	SignConfig         *signConfig          `toml:"sign"`
-	TsConfig           *tsConfig            `toml:"ts"`
+	DbsConfig          map[string]*dbConfig `mapstructure:"dbs"`
+	MongoConfig        *mongoConfig         `mapstructure:"mongo"`
+	RedisConfig        *redisConfig         `mapstructure:"redis"`
+	RedisClusterConfig *redisClusterConfig  `mapstructure:"redis_cluster"`
+	KafkaConfig        *kafkaConfig         `mapstructure:"kafka"`
+	SignConfig         *signConfig          `mapstructure:"sign"`
+	TsConfig           *tsConfig            `mapstructure:"ts"`
 
-	Ext map[string]interface{} `toml:"ext"`
+	Ext map[string]interface{} `mapstructure:"ext"`
 }
 
 type dbConfig struct {
-	Uri             string `toml:"uri"`
-	MaxIdleConn     int    `toml:"max_idle_conn"`
-	MaxOpenConn     int    `toml:"max_open_conn"`
-	ConnectIdleTime int    `toml:"connect_idle_time"` //second default 300s
-	ConnectLifeTime int    `toml:"connect_life_time"` //second default 600s
+	Uri             string `mapstructure:"uri"`
+	MaxIdleConn     int    `mapstructure:"max_idle_conn"`
+	MaxOpenConn     int    `mapstructure:"max_open_conn"`
+	ConnectIdleTime int    `mapstructure:"connect_idle_time"` //second default 300s
+	ConnectLifeTime int    `mapstructure:"connect_life_time"` //second default 600s
 }
 
 type redisConfig struct {
-	Addr           string `toml:"addr"`
-	Pass           string `toml:"pass"`
-	Db             int    `toml:"db"`
-	MinIdle        int    `toml:"min_idle"`
-	PoolSize       int    `toml:"pool_size"`
-	ConnectTimeout int    `toml:"connect_timeout"` //second default not set
-	ReadTimeout    int    `toml:"read_timeout"`    //second default not set
-	WriteTimeout   int    `toml:"write_timeout"`   //second default not set
+	Addr           string `mapstructure:"addr"`
+	Pass           string `mapstructure:"pass"`
+	Db             int    `mapstructure:"db"`
+	MinIdle        int    `mapstructure:"min_idle"`
+	PoolSize       int    `mapstructure:"pool_size"`
+	ConnectTimeout int    `mapstructure:"connect_timeout"` //second default not set
+	ReadTimeout    int    `mapstructure:"read_timeout"`    //second default not set
+	WriteTimeout   int    `mapstructure:"write_timeout"`   //second default not set
 }
 
 type redisClusterConfig struct {
-	Addrs          []string `toml:"addrs"`
-	Pass           string   `toml:"pass"`
-	MinIdle        int      `toml:"min_idle"`
-	PoolSize       int      `toml:"pool_size"`
-	ConnectTimeout int      `toml:"connect_timeout"` //second default not set
-	ReadTimeout    int      `toml:"read_timeout"`    //second default not set
-	WriteTimeout   int      `toml:"write_timeout"`   //second default not set
+	Addrs          []string `mapstructure:"addrs"`
+	Pass           string   `mapstructure:"pass"`
+	MinIdle        int      `mapstructure:"min_idle"`
+	PoolSize       int      `mapstructure:"pool_size"`
+	ConnectTimeout int      `mapstructure:"connect_timeout"` //second default not set
+	ReadTimeout    int      `mapstructure:"read_timeout"`    //second default not set
+	WriteTimeout   int      `mapstructure:"write_timeout"`   //second default not set
 }
 
 type kafkaConfig struct {
-	Consumers map[string]*kafkaConsumerConfig `toml:"consumers"`
-	Producers map[string]*kafkaProducerConfig `toml:"producers"`
+	Consumers map[string]*kafkaConsumerConfig `mapstructure:"consumers"`
+	Producers map[string]*kafkaProducerConfig `mapstructure:"producers"`
 }
 
 type kafkaConsumerConfig struct {
-	Broker    string `toml:"broker"`
-	Topic     string `toml:"topic"`
-	Group     string `toml:"group"`
-	Partition int    `toml:"partition"`
+	Broker    string `mapstructure:"broker"`
+	Topic     string `mapstructure:"topic"`
+	Group     string `mapstructure:"group"`
+	Partition int    `mapstructure:"partition"`
 }
 
 type kafkaProducerConfig struct {
-	Broker string `toml:"broker"`
-	Topic  string `toml:"topic"`
+	Broker string `mapstructure:"broker"`
+	Topic  string `mapstructure:"topic"`
 }
 
 type mongoConfig struct {
-	Uri            string `toml:"uri"`
-	Db             string `toml:"db"`
-	ConnectTimeout uint64 `toml:"connect_timeout"`
-	MaxOpenConn    uint64 `toml:"max_open_conn"`
-	MaxPoolSize    uint64 `toml:"max_pool_size"`
-	MinPoolSize    uint64 `toml:"min_pool_size"`
+	Uri            string `mapstructure:"uri"`
+	Db             string `mapstructure:"db"`
+	ConnectTimeout uint64 `mapstructure:"connect_timeout"`
+	MaxOpenConn    uint64 `mapstructure:"max_open_conn"`
+	MaxPoolSize    uint64 `mapstructure:"max_pool_size"`
+	MinPoolSize    uint64 `mapstructure:"min_pool_size"`
 }
 
 type signConfig struct {
-	Secret string `toml:"secret"`
-	Salt   string `toml:"salt"`
+	Secret string `mapstructure:"secret"`
+	Salt   string `mapstructure:"salt"`
 }
 
 type tsConfig struct {
-	Expire string `toml:"expire"`
+	Expire string `mapstructure:"expire"`
 }
 
 func InitConfig(file string) *AppConfig {
