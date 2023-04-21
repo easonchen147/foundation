@@ -26,8 +26,14 @@ func Post(ctx context.Context, url string, data interface{}, result interface{})
 	return err
 }
 
-// Get  快速发起get请求
-func Get(ctx context.Context, url string, result interface{}) error {
-	_, err := httpClient.R().SetResult(&result).Get(url)
+// PostWithHeader 快速发起post请求，带headers
+func PostWithHeader(ctx context.Context, headers map[string]string, url string, data interface{}, result interface{}) error {
+	_, err := httpClient.R().SetHeaders(headers).SetBody(data).SetResult(&result).Post(url)
+	return err
+}
+
+// GetWithHeader  快速发起get请求，带headers
+func GetWithHeader(ctx context.Context, headers map[string]string, url string, result interface{}) error {
+	_, err := httpClient.R().SetHeaders(headers).SetResult(&result).Get(url)
 	return err
 }
