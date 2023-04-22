@@ -33,7 +33,7 @@ func PostWithHeader(ctx context.Context, headers map[string]string, url string, 
 }
 
 // GetWithHeader  快速发起get请求，带headers
-func GetWithHeader(ctx context.Context, headers map[string]string, url string, result interface{}) error {
-	_, err := httpClient.R().SetHeaders(headers).SetResult(&result).Get(url)
+func GetWithHeader(ctx context.Context, headers map[string]string, queries map[string]string, url string, result interface{}) error {
+	_, err := httpClient.R().SetHeaders(headers).SetQueryParams(queries).SetResult(&result).Get(url)
 	return err
 }
