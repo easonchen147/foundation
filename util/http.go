@@ -22,18 +22,24 @@ func GetHttpClient(ctx context.Context) *resty.Client {
 
 // Post 快速发起post请求
 func Post(ctx context.Context, url string, data interface{}, result interface{}) error {
-	_, err := httpClient.R().SetBody(data).SetResult(&result).Post(url)
+	_, err := httpClient.R().SetBody(data).SetResult(&result).SetError(&result).Post(url)
+	return err
+}
+
+// Get  快速发起get请求
+func Get(ctx context.Context, url string, queries map[string]string, result interface{}) error {
+	_, err := httpClient.R().SetQueryParams(queries).SetResult(&result).SetError(&result).Get(url)
 	return err
 }
 
 // PostWithHeader 快速发起post请求，带headers
 func PostWithHeader(ctx context.Context, headers map[string]string, url string, data interface{}, result interface{}) error {
-	_, err := httpClient.R().SetHeaders(headers).SetBody(data).SetResult(&result).Post(url)
+	_, err := httpClient.R().SetHeaders(headers).SetBody(data).SetResult(&result).SetError(&result).Post(url)
 	return err
 }
 
 // GetWithHeader  快速发起get请求，带headers
 func GetWithHeader(ctx context.Context, headers map[string]string, queries map[string]string, url string, result interface{}) error {
-	_, err := httpClient.R().SetHeaders(headers).SetQueryParams(queries).SetResult(&result).Get(url)
+	_, err := httpClient.R().SetHeaders(headers).SetQueryParams(queries).SetResult(&result).SetError(&result).Get(url)
 	return err
 }
