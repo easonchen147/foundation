@@ -2,6 +2,7 @@ package cache
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/easonchen147/foundation/cfg"
@@ -12,6 +13,18 @@ var (
 	client        *redis.Client
 	clusterClient *redis.ClusterClient
 )
+
+func init() {
+	err := InitRedis(cfg.AppConf)
+	if err != nil {
+		panic(fmt.Sprintf("init redis failed: %s", err))
+	}
+
+	err = InitRedisCluster(cfg.AppConf)
+	if err != nil {
+		panic(fmt.Sprintf("init redis cluster failed: %s", err))
+	}
+}
 
 // InitRedis 初始化redis
 func InitRedis(cfg *cfg.AppConfig) error {

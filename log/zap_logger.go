@@ -18,8 +18,12 @@ var (
 	SqlLogger    *zap.Logger
 )
 
-// Init 配置日志模块
-func Init(cfg *cfg.AppConfig) {
+func init() {
+	InitLog(cfg.AppConf)
+}
+
+// InitLog 配置日志模块
+func InitLog(cfg *cfg.AppConfig) {
 	var level zapcore.Level
 	if level.UnmarshalText([]byte(cfg.LogLevel)) != nil {
 		level = zapcore.InfoLevel

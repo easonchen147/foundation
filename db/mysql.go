@@ -31,6 +31,13 @@ func DB(dbName ...string) *gorm.DB {
 	return db
 }
 
+func init() {
+	err := InitMysql(cfg.AppConf)
+	if err != nil {
+		panic(fmt.Sprintf("init mysql failed: %s", err))
+	}
+}
+
 // InitMysql 初始化数据库
 func InitMysql(cfg *cfg.AppConfig) error {
 	conns = make(map[string]*gorm.DB)

@@ -6,11 +6,9 @@ import (
 	"fmt"
 	"github.com/easonchen147/foundation/cache"
 	"github.com/easonchen147/foundation/cfg"
-	"github.com/easonchen147/foundation/db"
 	"github.com/easonchen147/foundation/kafka"
 	"github.com/easonchen147/foundation/log"
 	"github.com/easonchen147/foundation/middleware"
-	"github.com/easonchen147/foundation/mongo"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -29,57 +27,6 @@ func StartServer(registerRoutes func(*gin.Engine)) {
 	if err != nil {
 		panic(fmt.Sprintf("Server started failed: %s", err))
 	}
-}
-
-func init() {
-	// 初始化相关依赖组件
-	err := initialize(cfg.AppConf)
-	if err != nil {
-		panic(fmt.Sprintf("initialize failed: %s", err))
-	}
-}
-
-// initialize 初始化组件依赖
-func initialize(cfg *cfg.AppConfig) error {
-	// 初始化日志
-	log.Init(cfg)
-
-	// 初始化Mysql数据库
-	err := db.InitMysql(cfg)
-	if err != nil {
-		return fmt.Errorf("init db failed, error: %s", err)
-	}
-
-	err = mongo.InitMongo(cfg)
-	if err != nil {
-		return fmt.Errorf("init db failed, error: %s", err)
-	}
-
-	// 初始化Redis
-	err = cache.InitRedis(cfg)
-	if err != nil {
-		return fmt.Errorf("init foundation failed, error: %s", err)
-	}
-
-	// 初始化Redis Cluster
-	err = cache.InitRedisCluster(cfg)
-	if err != nil {
-		return fmt.Errorf("init foundation cluster failed, error: %s", err)
-	}
-
-	// 初始化kafka
-	err = kafka.InitProducer(cfg)
-	if err != nil {
-		return fmt.Errorf("init kafka producer failed, error: %s", err)
-	}
-
-	// 初始化kafka
-	err = kafka.InitConsumer(cfg)
-	if err != nil {
-		return fmt.Errorf("init kafka consumer failed, error: %s", err)
-	}
-
-	return nil
 }
 
 // startServer 启动服务

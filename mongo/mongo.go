@@ -3,6 +3,7 @@ package mongo
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/easonchen147/foundation/cfg"
@@ -19,6 +20,13 @@ type MongoInstance struct {
 var (
 	mg *MongoInstance
 )
+
+func init() {
+	err := InitMongo(cfg.AppConf)
+	if err != nil {
+		panic(fmt.Sprintf("init mongo failed: %s", err))
+	}
+}
 
 func InitMongo(cfg *cfg.AppConfig) error {
 	if cfg.MongoConfig == nil {

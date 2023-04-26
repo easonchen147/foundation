@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"errors"
+	"fmt"
 	"github.com/easonchen147/foundation/cfg"
 	"github.com/segmentio/kafka-go"
 )
@@ -10,6 +11,18 @@ var (
 	producers map[string]*kafka.Writer
 	consumers map[string]*kafka.Reader
 )
+
+func init() {
+	err := InitProducer(cfg.AppConf)
+	if err != nil {
+		panic(fmt.Sprintf("init kafka producer failed: %s", err))
+	}
+
+	err = InitConsumer(cfg.AppConf)
+	if err != nil {
+		panic(fmt.Sprintf("init kafka consumer failed: %s", err))
+	}
+}
 
 func InitProducer(cfg *cfg.AppConfig) error {
 	if cfg.KafkaConfig == nil {
