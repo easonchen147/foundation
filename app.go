@@ -9,7 +9,7 @@ import (
 	"github.com/easonchen147/foundation/db"
 	"github.com/easonchen147/foundation/kafka"
 	"github.com/easonchen147/foundation/log"
-	middleware2 "github.com/easonchen147/foundation/middleware"
+	"github.com/easonchen147/foundation/middleware"
 	"github.com/easonchen147/foundation/mongo"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
@@ -24,16 +24,18 @@ import (
 
 // StartServer 应用入口点
 func StartServer(registerRoutes func(*gin.Engine)) {
+	// 启动Web服务
+	err := startServer(cfg.AppConf, registerRoutes)
+	if err != nil {
+		panic(fmt.Sprintf("Server started failed: %s", err))
+	}
+}
+
+func init() {
 	// 初始化相关依赖组件
 	err := initialize(cfg.AppConf)
 	if err != nil {
 		panic(fmt.Sprintf("initialize failed: %s", err))
-	}
-
-	// 启动Web服务
-	err = startServer(cfg.AppConf, registerRoutes)
-	if err != nil {
-		panic(fmt.Sprintf("Server started failed: %s", err))
 	}
 }
 
@@ -122,8 +124,8 @@ func initEngine(cfg *cfg.AppConfig, registerRoutes func(*gin.Engine)) *gin.Engin
 	// to collect a 5-second execution trace: wget ip:port/debug/pprof/trace?seconds=5
 	pprof.Register(engine, "dev/pprof")
 
-	engine.Use(middleware2.Trace())
-	engine.Use(middleware2.Logger())
+	engine.Use(middleware.Trace())
+	engine.Use(middleware.Logger())
 	engine.Use(gin.CustomRecovery(func(c *gin.Context, err interface{}) {
 		log.Error(c, "panic recovery: %v", debug.Stack())
 		c.AbortWithStatusJSON(http.StatusOK, gin.H{"code": -1, "msg": "服务器异常，请稍后再试"})
