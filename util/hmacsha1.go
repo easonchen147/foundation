@@ -14,7 +14,7 @@ func HmacSha1WithBase64(secret, value string) string {
 	return base64.StdEncoding.EncodeToString(mac.Sum(nil)) //进行base64编码
 }
 
-func HmacSha256WithBase64(secret, value string) string {
+func HmacSha256WithHex(secret, value string) string {
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write([]byte(value))
 	return hex.EncodeToString(mac.Sum(nil))
