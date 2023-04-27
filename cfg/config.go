@@ -37,6 +37,8 @@ type AppConfig struct {
 	SignConfig         *signConfig          `mapstructure:"sign"`
 	TsConfig           *tsConfig            `mapstructure:"ts"`
 
+	HttpTimeout int `mapstructure:"http_timeout"` // second，default 5s
+
 	Ext map[string]interface{} `mapstructure:"ext"`
 }
 
@@ -114,6 +116,7 @@ func InitConfig(file string) *AppConfig {
 		LogFile:       "logs/app.log",
 		LogLevel:      "debug",
 		AccessLogFile: "logs/access.log",
+		HttpTimeout:   5,
 	}
 	return AppConf
 }
