@@ -52,6 +52,7 @@ type dbConfig struct {
 
 type redisConfig struct {
 	Addr           string `mapstructure:"addr"`
+	User           string `mapstructure:"user"`
 	Pass           string `mapstructure:"pass"`
 	Db             int    `mapstructure:"db"`
 	MinIdle        int    `mapstructure:"min_idle"`
