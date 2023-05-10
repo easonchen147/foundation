@@ -33,6 +33,7 @@ func InitRedis(cfg *cfg.AppConfig) error {
 	}
 	client = redis.NewClient(&redis.Options{
 		Addr:         cfg.RedisConfig.Addr,
+		Username:     cfg.RedisConfig.User,
 		Password:     cfg.RedisConfig.Pass,
 		DB:           cfg.RedisConfig.Db,
 		MinIdleConns: cfg.RedisConfig.MinIdle,
