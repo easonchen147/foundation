@@ -17,6 +17,10 @@ var (
 	AccessLogger *zap.Logger
 	Logger       *zap.Logger
 	SqlLogger    *zap.Logger
+
+	lumberJackLoggerDefault *lumberjack.Logger
+	lumberJackLoggerAccess  *lumberjack.Logger
+	lumberJackLoggerSql     *lumberjack.Logger
 )
 
 func init() {
@@ -44,6 +48,10 @@ func InitLog(cfg *cfg.AppConfig) {
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 
+	lumberJackLoggerDefault = newLunmberJackLogger(cfg.LogFile)
+	lumberJackLoggerAccess = newLunmberJackLogger(cfg.AccessLogFile)
+	lumberJackLoggerSql = newLunmberJackLogger(cfg.SqlLogFile)
+
 	var core, accessCore, sqlCore zapcore.Core
 	switch cfg.LogMode {
 	case "console":
@@ -53,9 +61,9 @@ func InitLog(cfg *cfg.AppConfig) {
 		accessCore = zapcore.NewTee(zapcore.NewCore(
 			zapcore.NewJSONEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level))
 	case "file":
-		core = newLoggerCore(cfg.LogFile, core, encoderConfig, level)
-		accessCore = newLoggerCore(cfg.AccessLogFile, core, encoderConfig, level)
-		sqlCore = newLoggerCore(cfg.SqlLogFile, core, encoderConfig, level)
+		core = newLoggerCore(lumberJackLoggerDefault, encoderConfig, level)
+		accessCore = newLoggerCore(lumberJackLoggerAccess, encoderConfig, level)
+		sqlCore = newLoggerCore(lumberJackLoggerSql, encoderConfig, level)
 	}
 
 	Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
@@ -63,17 +71,21 @@ func InitLog(cfg *cfg.AppConfig) {
 	SqlLogger = zap.New(sqlCore, zap.AddCaller(), zap.AddCallerSkip(1))
 }
 
-func newLoggerCore(logFilePath string, core zapcore.Core, encoderConfig zapcore.EncoderConfig, level zapcore.Level) zapcore.Core {
-	writer := zapcore.AddSync(&lumberjack.Logger{
+func newLoggerCore(logger *lumberjack.Logger, encoderConfig zapcore.EncoderConfig, level zapcore.Level) zapcore.Core {
+	writer := zapcore.AddSync(logger)
+	return zapcore.NewTee(zapcore.NewCore(
+		zapcore.NewJSONEncoder(encoderConfig), zapcore.AddSync(writer), level))
+}
+
+func newLunmberJackLogger(logFilePath string) *lumberjack.Logger {
+	return &lumberjack.Logger{
 		Filename:   logFilePath,
 		MaxSize:    500, // megabytes
 		MaxBackups: 0,
 		MaxAge:     30, // days
 		LocalTime:  true,
 		Compress:   true,
-	})
-	return zapcore.NewTee(zapcore.NewCore(
-		zapcore.NewJSONEncoder(encoderConfig), zapcore.AddSync(writer), level))
+	}
 }
 
 func Debug(ctx context.Context, msg string, val ...interface{}) {
@@ -117,4 +129,10 @@ func getTraceId(ctx context.Context) string {
 		return ""
 	}
 	return traceId
+}
+
+func Close() {
+	lumberJackLoggerDefault.Rotate()
+	lumberJackLoggerAccess.Rotate()
+	lumberJackLoggerSql.Rotate()
 }

@@ -114,6 +114,7 @@ func shutdown(server *http.Server) {
 	// 资源释放
 	cache.Close()
 	kafka.Close()
+	log.Close()
 
 	// 关闭server
 	if err := server.Shutdown(context.Background()); err != nil {
