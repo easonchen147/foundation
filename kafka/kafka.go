@@ -3,7 +3,9 @@ package kafka
 import (
 	"errors"
 	"fmt"
+
 	"github.com/easonchen147/foundation/cfg"
+
 	"github.com/segmentio/kafka-go"
 )
 

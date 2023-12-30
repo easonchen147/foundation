@@ -2,9 +2,11 @@ package util
 
 import (
 	"context"
-	"github.com/easonchen147/foundation/cfg"
-	"github.com/go-resty/resty/v2"
 	"time"
+
+	"github.com/easonchen147/foundation/cfg"
+
+	"github.com/go-resty/resty/v2"
 )
 
 var httpClient *resty.Client

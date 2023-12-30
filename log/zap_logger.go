@@ -7,9 +7,10 @@ import (
 
 	"github.com/easonchen147/foundation/cfg"
 	"github.com/easonchen147/foundation/constant"
-	"github.com/natefinch/lumberjack"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var (

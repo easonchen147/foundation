@@ -3,6 +3,7 @@ package middleware
 import (
 	"github.com/easonchen147/foundation/constant"
 	"github.com/easonchen147/foundation/util"
+
 	"github.com/gin-gonic/gin"
 )
 

@@ -6,10 +6,11 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
-	"github.com/easonchen147/foundation/constant"
 	"hash"
 	"io"
 	"time"
+
+	"github.com/easonchen147/foundation/constant"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/easonchen147/foundation/cfg"
+	"github.com/easonchen147/foundation/log"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"moul.io/zapgorm2"
-
-	"github.com/easonchen147/foundation/cfg"
-	"github.com/easonchen147/foundation/log"
 )
 
 var (

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/easonchen147/foundation/cfg"
+
 	"github.com/redis/go-redis/v9"
 )
 

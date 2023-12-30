@@ -7,18 +7,19 @@ import (
 	"time"
 
 	"github.com/easonchen147/foundation/cfg"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-type MongoInstance struct {
+type Db struct {
 	Client *mongo.Client
 	Db     *mongo.Database
 }
 
 var (
-	mg *MongoInstance
+	mg *Db
 )
 
 func init() {
@@ -40,14 +41,14 @@ func InitMongo(cfg *cfg.AppConfig) error {
 	return nil
 }
 
-func Mongo() *MongoInstance {
+func Mongo() *Db {
 	if mg == nil {
 		panic(errors.New("mongodb is not ready"))
 	}
 	return mg
 }
 
-func connectMongo(cfg *cfg.AppConfig) (*MongoInstance, error) {
+func connectMongo(cfg *cfg.AppConfig) (*Db, error) {
 	option := options.Client().ApplyURI(cfg.MongoConfig.Uri).
 		SetConnectTimeout(time.Duration(cfg.MongoConfig.ConnectTimeout) * time.Second).
 		SetMaxConnecting(cfg.MongoConfig.MaxOpenConn).
@@ -64,7 +65,7 @@ func connectMongo(cfg *cfg.AppConfig) (*MongoInstance, error) {
 		return nil, err
 	}
 
-	return &MongoInstance{
+	return &Db{
 		Client: client,
 		Db:     client.Database(cfg.MongoConfig.Db),
 	}, nil

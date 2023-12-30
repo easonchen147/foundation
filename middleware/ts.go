@@ -1,11 +1,13 @@
 package middleware
 
 import (
-	"github.com/easonchen147/foundation/cfg"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/easonchen147/foundation/cfg"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (

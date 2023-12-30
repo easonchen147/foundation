@@ -5,10 +5,12 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
-	"github.com/easonchen147/foundation/cfg"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
+
+	"github.com/easonchen147/foundation/cfg"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (

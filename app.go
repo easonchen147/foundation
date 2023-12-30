@@ -4,13 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/easonchen147/foundation/cache"
-	"github.com/easonchen147/foundation/cfg"
-	"github.com/easonchen147/foundation/kafka"
-	"github.com/easonchen147/foundation/log"
-	"github.com/easonchen147/foundation/middleware"
-	"github.com/gin-contrib/pprof"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,6 +11,15 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/easonchen147/foundation/cache"
+	"github.com/easonchen147/foundation/cfg"
+	"github.com/easonchen147/foundation/kafka"
+	"github.com/easonchen147/foundation/log"
+	"github.com/easonchen147/foundation/middleware"
+
+	"github.com/gin-contrib/pprof"
+	"github.com/gin-gonic/gin"
 )
 
 // StartServer 应用入口点
