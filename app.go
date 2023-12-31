@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"runtime/debug"
 	"strconv"
 	"syscall"
 	"time"
@@ -76,7 +75,7 @@ func initEngine(cfg *cfg.AppConfig, registerRoutes func(*gin.Engine)) *gin.Engin
 	engine.Use(middleware.Trace())
 	engine.Use(middleware.Logger())
 	engine.Use(gin.CustomRecovery(func(c *gin.Context, err interface{}) {
-		log.Error(c, "panic recovery: %v", debug.Stack())
+		log.Error(c, "panic recovery: %v", err)
 		c.AbortWithStatusJSON(http.StatusOK, gin.H{"code": -1, "msg": "服务器异常，请稍后再试"})
 	}))
 

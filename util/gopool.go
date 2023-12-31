@@ -10,8 +10,8 @@ import (
 
 var goPool *ants.Pool
 
-func init() {
-	pool, err := ants.NewPool(1000, ants.WithLogger(poolLogger), ants.WithPanicHandler(func(i interface{}) {
+func InitGoPool(max int) {
+	pool, err := ants.NewPool(max, ants.WithLogger(poolLogger), ants.WithPanicHandler(func(i interface{}) {
 		log.Error(context.Background(), "goroutine panic: %v", i)
 	}))
 	if err != nil {
