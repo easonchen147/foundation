@@ -52,21 +52,22 @@ func InitLog(cfg *cfg.AppConfig) {
 	lumberJackLoggerAccess = newLunmberJackLogger(cfg.AccessLogFile)
 	lumberJackLoggerSql = newLunmberJackLogger(cfg.SqlLogFile)
 
-	var core, accessCore, sqlCore zapcore.Core
+	var defaultCore, accessCore, sqlCore zapcore.Core
 	switch cfg.LogMode {
 	case "console":
-		core = zapcore.NewTee(zapcore.NewCore(
-			zapcore.NewJSONEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level))
-
+		defaultCore = zapcore.NewTee(zapcore.NewCore(
+			zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level))
 		accessCore = zapcore.NewTee(zapcore.NewCore(
-			zapcore.NewJSONEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level))
+			zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level))
+		sqlCore = zapcore.NewTee(zapcore.NewCore(
+			zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level))
 	case "file":
-		core = newLoggerCore(lumberJackLoggerDefault, encoderConfig, level)
+		defaultCore = newLoggerCore(lumberJackLoggerDefault, encoderConfig, level)
 		accessCore = newLoggerCore(lumberJackLoggerAccess, encoderConfig, level)
 		sqlCore = newLoggerCore(lumberJackLoggerSql, encoderConfig, level)
 	}
 
-	Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
+	Logger = zap.New(defaultCore, zap.AddCaller(), zap.AddCallerSkip(1))
 	AccessLogger = zap.New(accessCore, zap.AddCaller(), zap.AddCallerSkip(1))
 	SqlLogger = zap.New(sqlCore, zap.AddCaller(), zap.AddCallerSkip(1))
 }
@@ -132,7 +133,7 @@ func getTraceId(ctx context.Context) string {
 }
 
 func Close() {
-	lumberJackLoggerDefault.Rotate()
-	lumberJackLoggerAccess.Rotate()
-	lumberJackLoggerSql.Rotate()
+	_ = lumberJackLoggerDefault.Rotate()
+	_ = lumberJackLoggerAccess.Rotate()
+	_ = lumberJackLoggerSql.Rotate()
 }
